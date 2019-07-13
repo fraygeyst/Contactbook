@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kontaktbuch</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="callphone">Auf Telefon zugreifen</string>
+    <string name="camera">Auf Kamera zugreifen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="cont_category_choose">Bitte Kategorie wählen!</string>
+    <string name="cont_email_send">E-Mail senden</string>
+    <string name="cont_name_missing">Bitte Namen eingeben!</string>
+    <string name="contact">Kontakt</string>
+    <string name="delete">Löschen</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="email">E-Mail</string>
+    <string name="email_categories">E-Mail Kategorien</string>
+    <string name="introduction_dialog">Möchten Sie sich vorstellen?</string>
+    <string name="item_delete_dialog">Dieses Item löschen?</string>
+    <string name="main_scan_cancelled">Scan abgebrochen</string>
+    <string name="name">Name</string>
+    <string name="number">Telefonnummer</string>
+    <string name="number_categories">Nummer-Kategorien</string>
+    <string name="numbers">Nummern</string>
+    <string name="own_number">Eigene Nummer</string>
+    <string name="permissions">Berechtigungen</string>
+    <string name="save">Speichern</string>
+    <string name="scan">QR-Code scannen</string>
+    <string name="search">Suchen</string>
+    <string name="show_qr">QR-Code anzeigen</string>
+    <string name="title_main">Kontakte</string>
+    <string name="title_numpad">Nummer wählen</string>
+    <string name="title_settings">Einstellungen</string>
+</resources>
