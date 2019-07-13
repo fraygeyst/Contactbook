@@ -23,6 +23,7 @@
             android:layout_marginBottom="30dp"
             android:gravity="center"
             android:text="@string/title_settings"
+            android:textAlignment="viewStart"
             android:textColor="@android:color/white"
             android:textSize="36sp" />
 
@@ -32,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/number_categories"
+            android:textAlignment="viewStart"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
@@ -41,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/email_categories"
+            android:textAlignment="viewStart"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
@@ -50,15 +53,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/permissions"
+            android:textAlignment="viewStart"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
             android:layout_marginBottom="30dp"
             android:gravity="center"
             android:text="@string/own_number"
+            android:textAlignment="viewStart"
             android:textColor="@android:color/white"
             android:textSize="36sp" />
 
@@ -68,6 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/edit"
+            android:textAlignment="viewStart"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
@@ -77,6 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/show_qr"
+            android:textAlignment="viewStart"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:visibility="gone" />
