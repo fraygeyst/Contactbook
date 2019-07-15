@@ -46,4 +46,8 @@
     //Dialogues
     <string name="item_delete_dialog">Delete this item?</string>
     <string name="introduction_dialog">Would you like to introduce yourself?</string>
+    <string name="own_contact_dialog">Delete own contact?</string>
+
+    // Toasts
+    <string name="own_cont_deleted">Own Contact was successfully deleted</string>
 </resources>

@@ -24,6 +24,24 @@
             android:textSize="18sp" />
 
         <ImageButton
+            android:id="@+id/contview_toolbar_isfav"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:visibility="gone"
+            app:srcCompat="@mipmap/icon_isfav_toolbar" />
+
+        <ImageButton
+            android:id="@+id/contview_toolbar_isntfav"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            app:srcCompat="@mipmap/icon_isntfav_toolbar" />
+        <ImageButton
             android:id="@+id/contview_toolbar_edit"
             android:layout_width="0dp"
             android:layout_height="match_parent"

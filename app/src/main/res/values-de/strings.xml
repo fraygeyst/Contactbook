@@ -29,4 +29,7 @@
     <string name="title_main">Kontakte</string>
     <string name="title_numpad">Nummer wählen</string>
     <string name="title_settings">Einstellungen</string>
+    <string name="own_contact_dialog">Eigenen Kontakt löschen?</string>
+    <string name="own_cont_deleted">Eigener Kontakt wurde erfolgreich gelöscht</string>
+
 </resources>

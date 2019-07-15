@@ -10,6 +10,17 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <TextView
+        android:id="@+id/main_own_cont"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/owncont_border"
+        android:gravity="center"
+        android:padding="20dp"
+        android:textColor="@color/zxing_status_text"
+        android:textSize="24sp"
+        android:visibility="gone" />
+
     <ListView
         android:id="@+id/main_listView"
         android:layout_width="match_parent"
