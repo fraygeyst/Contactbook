@@ -632,6 +632,14 @@ public class DBHelper extends SQLiteOpenHelper {
             return insertEmailCategory(catname);
         }
     }
+    // Favourite Update um Favorit bei View zu setzen
+    public void updateFavourite(int id, boolean fav){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DBHelper.KEY_FAVOURITE, fav);
+        db.update(DBHelper.TABLE_CONCTACT, cv, KEY_ID + "= ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
     public void loadDefaults(){
         List<String> defaultcats = Arrays.asList("Mobil 1", "Mobil 2", "Arbeit 1", "Arbeit 2", "Fax");
         for(int i = 0; i < defaultcats.size(); i++){

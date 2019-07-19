@@ -6,15 +6,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -50,6 +49,9 @@ public class contact_view_activity extends AppCompatActivity {
     private Contact fillCont;
     private Bitmap image = null;
     private TextView tool_title;
+    private ImageButton tool_isfav;
+    private ImageButton tool_isntfav;
+    private Boolean favourite;
     private de.hdodenhof.circleimageview.CircleImageView imgBut;
     private static final int REQUEST_CAPTURE_IMAGE = 100;
 
@@ -60,12 +62,14 @@ public class contact_view_activity extends AppCompatActivity {
 
         // Custom Actionbar initialsieren
         final View actionBarLayout = getLayoutInflater().inflate(R.layout.contact_view_actionbar,null);
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(actionBarLayout, new android.support.v7.app.ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        actionBar.setCustomView(actionBarLayout, new androidx.appcompat.app.ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         // Actionbar initialisieren und Listener setzen
+        tool_isfav = findViewById(R.id.contview_toolbar_isfav);
+        tool_isntfav = findViewById(R.id.contview_toolbar_isntfav);
         tool_title = findViewById(R.id.contview_toolbar_title);
         ImageButton tool_edit = findViewById(R.id.contview_toolbar_edit);
         tool_edit.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +138,24 @@ public class contact_view_activity extends AppCompatActivity {
                     }
                 });
                 dialog.show();
+            }
+        });
+        tool_isfav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHelper.updateFavourite(fillCont.getId(),false);
+                favourite = false;
+                fillCont = dbHelper.getContactById(fillCont.getId());
+                setfavourite();
+            }
+        });
+        tool_isntfav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHelper.updateFavourite(fillCont.getId(),true);
+                favourite = true;
+                fillCont = dbHelper.getContactById(fillCont.getId());
+                setfavourite();
             }
         });
 
@@ -267,11 +289,8 @@ public class contact_view_activity extends AppCompatActivity {
         } else {
             imgBut.setImageDrawable(ContextCompat.getDrawable(contact_view_activity.this, R.drawable.ic_contact));
         }
-        if(fillCont.isIsfavourite()){
-            //favourite.setChecked(true);
-        } else{
-            //favourite.setChecked(false);
-        }
+        favourite = fillCont.isIsfavourite();
+        setfavourite();
     }
     // QR-Code String generieren
     private String generateQR(){
@@ -314,5 +333,15 @@ public class contact_view_activity extends AppCompatActivity {
             }
         }
         return result;
+    }
+    // Toolbar Favorit aktualisieren
+    private void setfavourite(){
+        if(favourite){
+            tool_isfav.setVisibility(View.VISIBLE);
+            tool_isntfav.setVisibility(View.GONE);
+        } else {
+            tool_isfav.setVisibility(View.GONE);
+            tool_isntfav.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -8,11 +8,17 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -28,9 +34,13 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import de.hskl.contacts.Database_Structure.Contact;
+import de.hskl.contacts.Database_Structure.Numbers;
 import de.hskl.contacts.Helper.DBHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -112,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Überprüfen ob App das erste Mal ausgeführt wird
-        SharedPreferences prefs = this.getSharedPreferences("contact_prefs.hskl", Context.MODE_PRIVATE);
+        final SharedPreferences prefs = this.getSharedPreferences("contact_prefs.hskl", Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = prefs.edit();
         if(prefs.getBoolean("firsttime", true)){
             // Beispieldaten laden
@@ -144,6 +154,77 @@ public class MainActivity extends AppCompatActivity {
             dialog.show();
             editor.putBoolean("firsttime",false);
             editor.apply();
+        }
+        if (prefs.getBoolean("number_set", false)){
+            final TextView own_cont = findViewById(R.id.main_own_cont);
+            own_cont.setVisibility(View.VISIBLE);
+            own_cont.setText(prefs.getString("own_name", ""));
+            own_cont.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String number = prefs.getString("own_number", "");
+                    String name = prefs.getString("own_name", "");
+                    // Text für QR-Code holen
+                    String text = generateQR(name, number);
+                    // Erstellen des Codes vorbereiten
+                    MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                    try {
+                        BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,500,500);
+                        BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                        Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                        // Darstellung des QR-Codes in Dialogfenster
+                        final Dialog dialog = new Dialog(MainActivity.this);
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.setCancelable(false);
+                        dialog.setContentView(R.layout.dialog_qr_code);
+                        ImageView qrview = dialog.findViewById(R.id.dialog_qr_image);
+                        qrview.setImageBitmap(bitmap);
+                        Button cancel = dialog.findViewById(R.id.dialog_qr_cancel);
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            own_cont.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    final Dialog dialog = new Dialog(MainActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setCancelable(false);
+                    dialog.setContentView(R.layout.dialog_delete);
+                    TextView title = dialog.findViewById(R.id.dialog_delete_text);
+                    title.setText(R.string.own_contact_dialog);
+                    Button delete = dialog.findViewById(R.id.dialog_delete_delete);
+                    delete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            editor.remove("own_name");
+                            editor.remove("own_number");
+                            editor.remove("number_set");
+                            Toast.makeText(MainActivity.this, R.string.own_cont_deleted, Toast.LENGTH_SHORT).show();
+                            own_cont.setVisibility(View.GONE);
+                            editor.apply();
+                            dialog.dismiss();
+                        }
+                    });
+                    Button cancel = dialog.findViewById(R.id.dialog_delete_cancel);
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.cancel();
+                        }
+                    });
+                    dialog.show();
+                    return true;
+                }
+            });
         }
 
         // Views initialisieren und Listener erstellen
@@ -210,6 +291,61 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intent);
             }
         });
+        // Listener bei langem Click Kontakt löschen
+        contactList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final Dialog dialog = new Dialog(MainActivity.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.dialog_delete);
+                final TextView titemid = view.findViewById(R.id.listitem_contact_short_id);
+                Button delete = dialog.findViewById(R.id.dialog_delete_delete);
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int itemid = Integer.parseInt(titemid.getText().toString());
+                        dbHelper.deleteContact(itemid);
+                        setListViews(dbHelper.getContactHashListshort());
+                        dialog.dismiss();
+                    }
+                });
+                Button cancel = dialog.findViewById(R.id.dialog_delete_cancel);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.show();
+                return true;
+            }
+        });
         contactList.setAdapter(contact_adapter);
+    }
+    // QR-Code String generieren
+    private String generateQR(String name, String number){
+        // Beginn mit "cont" für späteres Filtern
+        String result = "cont#";
+        // Verschiedene Kontaktteile werden mit "#" getrennt und Ende mit "end" für Filter
+        result += name + "#" + getNumbersForQR(number) + "#" + "#" + false + "#end";
+        return result;
+    }
+    // Nummern für QR-Code
+    private String getNumbersForQR(String number){
+        String result = "";
+        Numbers number1 = new Numbers();
+        number1.setNumber(number);
+        List<Numbers> numlist = new ArrayList<>();
+        numlist.add(number1);
+        boolean first = true;
+        // Nummerliste wird in Schleife durchlaufen
+        for(int i = 0; i < numlist.size(); i++){
+            // Hilfsnummer
+            Numbers hnum = numlist.get(i);
+            // Falls erster durchlauf wird Trennzeichen weggelassen
+            result += hnum.getNumber() + "_" + "Privat";
+        }
+        return result;
     }
 }

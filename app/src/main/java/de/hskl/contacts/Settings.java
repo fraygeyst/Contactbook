@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -33,7 +33,7 @@ public class Settings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         setTitle(R.string.title_settings);
 
-        Button show_qr = findViewById(R.id.settings_ownnumber_show);
+        final Button show_qr = findViewById(R.id.settings_ownnumber_show);
 
         pref = getSharedPreferences("contact_prefs.hskl", Context.MODE_PRIVATE);
         if (pref.getBoolean("number_set", false)){
@@ -91,6 +91,7 @@ public class Settings extends AppCompatActivity {
                         editor.putString("own_name", name.getText().toString());
                         editor.putString("own_number", number.getText().toString());
                         editor.putBoolean("number_set", true);
+                        show_qr.setVisibility(View.VISIBLE);
                         editor.apply();
                         dialog.dismiss();
                     }
@@ -139,6 +140,7 @@ public class Settings extends AppCompatActivity {
             }
         });
     }
+    // QR-Code String generieren
     private String generateQR(String name, String number){
         // Beginn mit "cont" für späteres Filtern
         String result = "cont#";
