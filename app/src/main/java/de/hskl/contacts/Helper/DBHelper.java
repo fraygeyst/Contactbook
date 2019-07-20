@@ -163,6 +163,21 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return check;
     }
+    public long updateCategory(int id, String name){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DBHelper.KEY_NAME, name);
+        long check = db.update(DBHelper.TABLE_CATEGORY, cv, KEY_ID + "= ?", new String[]{String.valueOf(id)});
+        db.close();
+        return check;
+    }
+    public long updateEmailCategory(int id, String name){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DBHelper.KEY_NAME, name);
+        long check = db.update(DBHelper.TABLE_EMAIL_CATEGORY, cv, KEY_ID + "= ?", new String[]{String.valueOf(id)});        db.close();
+        return check;
+    }
     public long insertEmail(Emails iemail){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();

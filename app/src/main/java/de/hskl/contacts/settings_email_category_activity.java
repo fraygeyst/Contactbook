@@ -105,6 +105,36 @@ public class settings_email_category_activity extends AppCompatActivity {
                 return false;
             }
         });
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Dialog dialog = new Dialog(settings_email_category_activity.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.dialog_add_category);
+                Button save = dialog.findViewById(R.id.dialog_cat_save);
+                final EditText category_text = dialog.findViewById(R.id.dialog_cat_text);
+                TextView titemid = view.findViewById(R.id.listitem_category_id);
+                final int itemid = Integer.parseInt(titemid.getText().toString());
+                category_text.setText(dbHelper.getEmailCategoryNameById(itemid));
+                save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dbHelper.updateEmailCategory(itemid, category_text.getText().toString());
+                        setListViews();
+                        dialog.dismiss();
+                    }
+                });
+                Button cancel = dialog.findViewById(R.id.dialog_cat_cancel);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.show();
+            }
+        });
         lv.setAdapter(adapter);
         setListViewHeightBasedOnChildren(lv);
     }
