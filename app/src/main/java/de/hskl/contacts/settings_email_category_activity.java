@@ -102,7 +102,7 @@ public class settings_email_category_activity extends AppCompatActivity {
                     }
                 });
                 dialog.show();
-                return false;
+                return true;
             }
         });
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
