@@ -84,7 +84,7 @@ public class settings_email_category_activity extends AppCompatActivity {
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        boolean check = dbHelper.deleteCategory(itemid);
+                        boolean check = dbHelper.deleteEmailCategory(itemid);
                         if(check){
                             setListViews();
                             dialog.dismiss();
@@ -102,7 +102,7 @@ public class settings_email_category_activity extends AppCompatActivity {
                     }
                 });
                 dialog.show();
-                return false;
+                return true;
             }
         });
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

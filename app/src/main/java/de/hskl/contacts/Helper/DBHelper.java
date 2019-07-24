@@ -513,6 +513,27 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //Deletes
+    public boolean deleteEmailCategory(int id){
+        // Vorbereiten der Datenbank
+        SQLiteDatabase db = getReadableDatabase();
+        // Schauen, ob Datensatz in Datenbank vorhanden ist
+        String query = "SELECT * FROM " + TABLE_EMAILS + " WHERE " + KEY_CAT_ID_CATEGORY + " = " + id;
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){ // Falls Datensatz nicht vorhanden ist -> Abbruch
+            cursor.close();
+            db.close();
+            return false;
+        } else {
+            db = getWritableDatabase();
+            // Änderung des Datenbankbefehls für Löschen
+            query = "DELETE FROM " + TABLE_EMAIL_CATEGORY + " WHERE " + KEY_ID + " = " + id;
+            // Ausführen innerhalb Datenbank
+            db.execSQL(query);
+            cursor.close();
+            db.close();
+            return true;
+        }
+    }
     public boolean deleteCategory(int id){
         // Vorbereiten der Datenbank
         SQLiteDatabase db = getReadableDatabase();
@@ -520,13 +541,6 @@ public class DBHelper extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + TABLE_NUMBERS + " WHERE " + KEY_CAT_ID_CATEGORY + " = " + id;
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){   // Falls Datensatz nicht vorhanden ist -> Abbruch
-            cursor.close();
-            db.close();
-            return false;
-        }
-        query = "SELECT * FROM " + TABLE_EMAILS + " WHERE " + KEY_CAT_ID_CATEGORY + " = " + id;
-        cursor = db.rawQuery(query, null);
-        if(cursor.moveToFirst()){
             cursor.close();
             db.close();
             return false;
