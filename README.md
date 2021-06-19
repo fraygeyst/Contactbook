@@ -7,7 +7,7 @@ Also for privacy reasons it just uses a minimal set of
  contact photos and import contacts via QR codes).
 
  
-The app was made by Anatoli Sch‰fer and Marc Zintel and the project was
+The app was made by Anatoli Sch√§fer and Marc Zintel and the project was
  given by Prof. Dr. Manh Tien Tran. The project was a part of the Master
  degrees of computer science at the Hochschule Kaiserslautern.
 
@@ -21,4 +21,7 @@ Features:
     
 * Share your own number to others on a safe way (QR-scan)
     
-* Simple and clear design
+* Simple and clean design
+
+
+Download the deployed app at https://f-droid.org/de/packages/de.hskl.contacts/
